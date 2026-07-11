@@ -24,4 +24,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "unsplashcard"
 include(":app")
- 
+include(":build-logic")
+include(":domain")
+include(":data")
+include(":core")
+include(":feature")
