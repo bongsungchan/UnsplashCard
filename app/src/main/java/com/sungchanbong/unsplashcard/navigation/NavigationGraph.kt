@@ -19,16 +19,28 @@ fun NavigationGraph() {
             MainScreen(
                 onNavigateToDetail = {
                     navController.navigateOnce(PhotoDetailRoute(photoId = it))
+                },
+                onNavigateToPhotoLike = {
+                    navController.navigateOnce(LikePhotoRoute)
                 }
             )
         }
         composable<PhotoDetailRoute> {
             DetailScreen(
-                onNavigateBack = {}
+                onNavigateBack = {
+                    navController.popBackStackOnce()
+                }
             )
         }
         composable<LikePhotoRoute> {
-            LikeScreen()
+            LikeScreen(
+                onNavigateBack = {
+                    navController.popBackStackOnce()
+                },
+                onNavigateToDetail = {
+                    navController.navigateOnce(PhotoDetailRoute(photoId = it))
+                }
+            )
         }
     }
 }

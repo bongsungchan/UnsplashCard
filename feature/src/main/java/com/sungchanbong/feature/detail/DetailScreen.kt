@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sungchanbong.core.architecture.CollectAsEffect
 import com.sungchanbong.feature.detail.ui.DetailContent
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,13 +26,21 @@ fun DetailScreen(
     viewModel: DetailScreenViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    viewModel.effect.CollectAsEffect { effect ->
+        when (effect) {
+            is DetailScreenEffect.NavigateBack -> {
+                onNavigateBack()
+            }
+
+        }
+    }
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Detail") },
                 navigationIcon = {
                     IconButton(onClick = {
-
+                        viewModel.onIntent(DetailScreenIntent.BackClicked)
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,

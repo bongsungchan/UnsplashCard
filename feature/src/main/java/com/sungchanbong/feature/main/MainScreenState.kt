@@ -12,8 +12,10 @@ data class MainScreenState(
 sealed interface MainScreenIntent : UIIntent {
     data class PhotoClicked(val photoId: String) : MainScreenIntent
     data class TogglePhotoLike(val photo: Photo) : MainScreenIntent
+    data object PhotoLikeClicked : MainScreenIntent
 }
 
 sealed interface MainScreenEffect : UIEffect {
     data class NavigateToDetail(val photoId: String) : MainScreenEffect
+    data object NavigateToPhotoLike : MainScreenEffect
 }

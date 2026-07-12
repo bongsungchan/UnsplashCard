@@ -63,5 +63,13 @@ class PhotoRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getLikedPhoto(): Flow<List<Photo>> {
+        return likePhotoDao.observeFavorites().map { entities ->
+            entities.map {
+                it.toDomain()
+            }
+        }
+    }
+
 
 }

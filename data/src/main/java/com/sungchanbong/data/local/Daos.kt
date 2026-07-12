@@ -10,6 +10,7 @@ import com.sungchanbong.data.entities.LikePhotoEntity
 import com.sungchanbong.data.entities.PhotoEntity
 import com.sungchanbong.data.entities.PhotoWithLike
 import com.sungchanbong.data.entities.RemoteKeyEntity
+import kotlinx.coroutines.flow.Flow
 
 private const val SQLITE_MAX_VARIABLES = 900
 
@@ -109,6 +110,9 @@ interface LikePhotoDao {
             insert(entity)
             true
         }
+
+    @Query("SELECT * FROM like_photos ORDER BY savedAt DESC")
+    fun observeFavorites(): Flow<List<LikePhotoEntity>>
 }
 
 

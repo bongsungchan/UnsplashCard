@@ -2,7 +2,11 @@ package com.sungchanbong.feature.main
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -17,6 +21,7 @@ import com.sungchanbong.feature.main.ui.PhotoGrid
 @Composable
 fun MainScreen(
     onNavigateToDetail: (String) -> Unit,
+    onNavigateToPhotoLike: () -> Unit,
     mainScreenViewModel: MainScreenViewModel = hiltViewModel()
 ) {
     val photos = mainScreenViewModel.photos.collectAsLazyPagingItems()
@@ -25,12 +30,23 @@ fun MainScreen(
             is MainScreenEffect.NavigateToDetail -> {
                 onNavigateToDetail(effect.photoId)
             }
+
+            is MainScreenEffect.NavigateToPhotoLike -> {
+                onNavigateToPhotoLike()
+            }
         }
     }
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Title") },
+                actions = {
+                    IconButton(onClick = {
+                        mainScreenViewModel.onIntent(intent = MainScreenIntent.PhotoLikeClicked)
+                    }) {
+                        Icon(imageVector = Icons.Filled.Favorite, contentDescription = null)
+                    }
+                }
             )
         }
     ) { paddingValues ->

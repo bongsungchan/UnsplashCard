@@ -11,9 +11,9 @@ data class DetailScreenState(
 ) : UIState
 
 sealed interface DetailScreenIntent : UIIntent {
-
+    data object BackClicked : DetailScreenIntent
 }
 
 sealed interface DetailScreenEffect : UIEffect {
-
+    data object NavigateBack : DetailScreenEffect
 }

@@ -29,6 +29,9 @@ class MainScreenViewModel @Inject constructor(
             )
 
             is MainScreenIntent.TogglePhotoLike -> togglePhoto(intent.photo)
+            is MainScreenIntent.PhotoLikeClicked -> postSideEffect(
+                MainScreenEffect.NavigateToPhotoLike
+            )
         }
     }
 

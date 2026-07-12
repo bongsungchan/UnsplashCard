@@ -21,6 +21,11 @@ class DetailScreenViewModel @Inject constructor(
     private val photoId: String = savedStateHandle.toRoute<PhotoDetailRoute>().photoId
     private val loadedDetail = MutableStateFlow<PhotoDetail?>(value = null)
     override fun onIntent(intent: DetailScreenIntent) {
+        when (intent) {
+            is DetailScreenIntent.BackClicked -> {
+                postSideEffect(DetailScreenEffect.NavigateBack)
+            }
+        }
     }
 
     init {

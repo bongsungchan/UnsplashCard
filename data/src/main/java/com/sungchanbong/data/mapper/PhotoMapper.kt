@@ -87,3 +87,17 @@ fun Photo.toFavoriteEntity(savedAt: Long): LikePhotoEntity = LikePhotoEntity(
     likes = likes,
     savedAt = savedAt,
 )
+
+fun LikePhotoEntity.toDomain(): Photo = Photo(
+    id = id,
+    description = description,
+    thumbUrl = thumbUrl,
+    fullUrl = fullUrl,
+    width = width,
+    height = height,
+    authorName = authorName,
+    authorUsername = authorUsername,
+    authorProfileImageUrl = authorProfileImageUrl,
+    likes = likes,
+    isLike = true,
+)
