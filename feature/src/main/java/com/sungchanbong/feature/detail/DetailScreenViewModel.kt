@@ -6,12 +6,14 @@ import androidx.navigation.toRoute
 import com.sungchanbong.core.architecture.BaseViewModel
 import com.sungchanbong.domain.models.Photo
 import com.sungchanbong.domain.models.PhotoDetail
+import com.sungchanbong.domain.models.PhotoError
 import com.sungchanbong.domain.usecase.GetPhotosUseCase
 import com.sungchanbong.domain.usecase.PhotoLikeUseCase
 import com.sungchanbong.feature.PhotoDetailRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -39,6 +41,10 @@ class DetailScreenViewModel @Inject constructor(
             is DetailScreenIntent.TogglePhotoLike -> {
                 togglePhoto(intent.photo)
             }
+
+            is DetailScreenIntent.Retry -> {
+                load()
+            }
         }
     }
 
@@ -54,7 +60,14 @@ class DetailScreenViewModel @Inject constructor(
         }.distinctUntilChanged()
             .onEach { detail ->
                 reduce {
-                    copy(detail = detail)
+                    copy(isLoading = false, detail = detail)
+                }
+            }.catch { e ->
+                reduce {
+                    copy(
+                        isLoading = false,
+                        error = e as? PhotoError ?: PhotoError.Unexpected(e)
+                    )
                 }
             }.launchIn(viewModelScope)
 
@@ -65,12 +78,14 @@ class DetailScreenViewModel @Inject constructor(
     private fun load() {
         loadJob?.cancel()
         loadJob = viewModelScope.launch {
+            reduce { copy(isLoading = true, error = null) }
             getPhotosUseCase.getDetail(photoId)
                 .onSuccess { detail ->
                     loadedDetail.value = detail
-                    reduce {
-                        copy(detail = detail)
-                    }
+                }
+                .onFailure { e ->
+                    val error = e as? PhotoError ?: PhotoError.Unexpected(e)
+                    reduce { copy(isLoading = false, error = error) }
                 }
         }
     }

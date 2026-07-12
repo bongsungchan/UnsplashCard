@@ -13,8 +13,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sungchanbong.core.R
 import com.sungchanbong.core.architecture.CollectAsEffect
 import com.sungchanbong.feature.like.ui.LikePhotoContents
 
@@ -40,14 +42,14 @@ fun LikeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("좋아요") },
+                title = { Text(stringResource(R.string.title_favorites)) },
                 navigationIcon = {
                     IconButton(onClick = {
                         viewModel.onIntent(LikeScreenIntent.BackClicked)
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.action_back),
                         )
                     }
                 },
@@ -56,6 +58,8 @@ fun LikeScreen(
     ) { paddingValues ->
         LikePhotoContents(
             photos = state.photos,
+            isLoading = state.isLoading,
+            isEmpty = state.isEmpty,
             onPhotoLikeClick = {
                 viewModel.onIntent(LikeScreenIntent.TogglePhotoLike(it))
             },

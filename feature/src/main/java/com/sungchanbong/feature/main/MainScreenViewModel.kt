@@ -32,6 +32,10 @@ class MainScreenViewModel @Inject constructor(
             is MainScreenIntent.PhotoLikeClicked -> postSideEffect(
                 MainScreenEffect.NavigateToPhotoLike
             )
+
+            is MainScreenIntent.RetryClicked -> {
+                postSideEffect(MainScreenEffect.RetryPaging)
+            }
         }
     }
 

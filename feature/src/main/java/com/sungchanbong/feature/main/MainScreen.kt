@@ -12,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.sungchanbong.core.R
 import com.sungchanbong.core.architecture.CollectAsEffect
 import com.sungchanbong.feature.main.ui.PhotoGrid
 
@@ -22,10 +24,10 @@ import com.sungchanbong.feature.main.ui.PhotoGrid
 fun MainScreen(
     onNavigateToDetail: (String) -> Unit,
     onNavigateToPhotoLike: () -> Unit,
-    mainScreenViewModel: MainScreenViewModel = hiltViewModel()
+    viewModel: MainScreenViewModel = hiltViewModel()
 ) {
-    val photos = mainScreenViewModel.photos.collectAsLazyPagingItems()
-    mainScreenViewModel.effect.CollectAsEffect { effect ->
+    val photos = viewModel.photos.collectAsLazyPagingItems()
+    viewModel.effect.CollectAsEffect { effect ->
         when (effect) {
             is MainScreenEffect.NavigateToDetail -> {
                 onNavigateToDetail(effect.photoId)
@@ -34,17 +36,24 @@ fun MainScreen(
             is MainScreenEffect.NavigateToPhotoLike -> {
                 onNavigateToPhotoLike()
             }
+
+            is MainScreenEffect.RetryPaging -> {
+                photos.retry()
+            }
         }
     }
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Title") },
+                title = { Text(stringResource(R.string.title_explorer)) },
                 actions = {
                     IconButton(onClick = {
-                        mainScreenViewModel.onIntent(intent = MainScreenIntent.PhotoLikeClicked)
+                        viewModel.onIntent(intent = MainScreenIntent.PhotoLikeClicked)
                     }) {
-                        Icon(imageVector = Icons.Filled.Favorite, contentDescription = null)
+                        Icon(
+                            imageVector = Icons.Filled.Favorite,
+                            contentDescription = stringResource(R.string.cd_open_favorites),
+                        )
                     }
                 }
             )
@@ -53,10 +62,13 @@ fun MainScreen(
         PhotoGrid(
             photos = photos,
             onPhotoClick = { photoId ->
-                mainScreenViewModel.onIntent(intent = MainScreenIntent.PhotoClicked(photoId = photoId))
+                viewModel.onIntent(intent = MainScreenIntent.PhotoClicked(photoId = photoId))
             },
             onPhotoLikeClick = {
-                mainScreenViewModel.onIntent(intent = MainScreenIntent.TogglePhotoLike(it))
+                viewModel.onIntent(intent = MainScreenIntent.TogglePhotoLike(it))
+            },
+            onRetry = {
+                viewModel.onIntent(MainScreenIntent.RetryClicked)
             },
             modifier = Modifier
                 .fillMaxSize()

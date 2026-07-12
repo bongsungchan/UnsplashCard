@@ -20,13 +20,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.sungchanbong.core.R
 import com.sungchanbong.domain.models.Photo
 
-private const val GRID_ITEM_ASPECT_RATIO = 0.7f
 private val SCRIM_COLOR = Color(0x99000000)
 
 @Composable
@@ -45,17 +47,25 @@ fun PhotoGridItem(
             .build()
     }
 
+    val imageDescription = photo.description?.takeIf { it.isNotBlank() }
+        ?: stringResource(R.string.cd_photo_by_author, photo.authorName)
+
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(GRID_ITEM_ASPECT_RATIO)
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .clickable(onClick = onClick),
+            .clickable(
+                onClickLabel = stringResource(R.string.cd_open_photo_detail),
+                role = Role.Button,
+                onClick = onClick,
+            )
     ) {
         AsyncImage(
             model = request,
-            contentDescription = null,
+            contentDescription = imageDescription,
             contentScale = ContentScale.Crop,
             modifier = Modifier.matchParentSize(),
         )
@@ -90,6 +100,7 @@ fun PhotoGridItem(
                 isLike = photo.isLike,
                 onClick = onClickLike,
                 iconSize = 18,
+                unfavoriteTint = Color.White,
             )
         }
     }

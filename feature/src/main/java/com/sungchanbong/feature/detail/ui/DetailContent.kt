@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,9 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.sungchanbong.core.R
 import com.sungchanbong.domain.models.PhotoDetail
 
 @Composable
@@ -49,9 +53,27 @@ fun DetailContent(detail: PhotoDetail, onRetry: () -> Unit) {
             contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .fillMaxWidth()
+                .aspectRatio(photo.aspectRatio.coerceIn(MIN_RATIO, MAX_RATIO)),
         )
 
         Column(modifier = Modifier.padding(16.dp)) {
+            if (detail.isStale) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 12.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.detail_stale_notice),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.weight(1f),
+                    )
+                    TextButton(onClick = onRetry) {
+                        Text(stringResource(R.string.action_retry))
+                    }
+                }
+            }
+
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AsyncImage(
                     model = photo.authorProfileImageUrl,
@@ -86,16 +108,41 @@ fun DetailContent(detail: PhotoDetail, onRetry: () -> Unit) {
                 modifier = Modifier.padding(top = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                MetaRow("좋아요", photo.likes.toString())
-                detail.views?.let { MetaRow("조회", it.toString()) }
-                detail.downloads?.let {
-                    MetaRow("다운로드", it.toString())
+                MetaRow(
+                    stringResource(R.string.detail_likes),
+                    photo.likes.toString()
+                )
+                detail.views?.let {
+                    MetaRow(
+                        stringResource(R.string.detail_views),
+                        it.toString()
+                    )
                 }
-                detail.location?.let { MetaRow("위치", it) }
-                detail.exifModel?.let { MetaRow("카메라", it) }
+                detail.downloads?.let {
+                    MetaRow(
+                        stringResource(R.string.detail_downloads),
+                        it.toString()
+                    )
+                }
+                detail.location?.let {
+                    MetaRow(
+                        stringResource(R.string.detail_location),
+                        it
+                    )
+                }
+                detail.exifModel?.let {
+                    MetaRow(
+                        stringResource(R.string.detail_camera),
+                        it
+                    )
+                }
+                MetaRow(
+                    stringResource(R.string.detail_dimensions),
+                    stringResource(R.string.detail_dimensions_format, photo.width, photo.height),
+                )
                 if (detail.tags.isNotEmpty()) {
                     MetaRow(
-                        "태그",
+                        stringResource(R.string.detail_tags),
                         detail.tags.take(MAX_TAGS).joinToString(", "),
                     )
                 }
@@ -118,3 +165,5 @@ private fun MetaRow(label: String, value: String) {
 }
 
 private const val MAX_TAGS = 8
+private const val MIN_RATIO = 0.5f
+private const val MAX_RATIO = 1.5f

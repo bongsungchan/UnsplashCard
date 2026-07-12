@@ -12,7 +12,15 @@ data class Photo(
     val authorProfileImageUrl: String?,
     val likes: Int = 0,
     val isLike: Boolean = false,
-)
+) {
+    val aspectRatio: Float
+        get() = if (width > 0 && height > 0) width.toFloat() / height.toFloat() else DEFAULT_ASPECT_RATIO
+
+    private companion object {
+        const val DEFAULT_ASPECT_RATIO = 0.75f
+    }
+}
+
 
 data class PhotoDetail(
     val photo: Photo,

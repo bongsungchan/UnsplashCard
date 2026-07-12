@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="cd_favorite_add">좋아요</string>
+    <string name="cd_favorite_remove">좋아요 취소</string>
+    <string name="cd_author_profile_image">작성자 프로필 사진</string>
+
+    <string name="cd_open_favorites">좋아요 목록 열기</string>
+    <string name="cd_open_photo_detail">사진 상세 보기</string>
+    <string name="cd_photo_by_author">%1$s 님이 촬영한 사진</string>
+
+    <string name="title_explorer">Unsplash Explorer</string>
+    <string name="title_photo_detail">사진 상세</string>
+    <string name="title_favorites">좋아요한 사진</string>
+
+    <string name="action_retry">다시 시도</string>
+    <string name="action_back">뒤로</string>
+    <string name="action_download">다운로드</string>
+
+    <string name="favorites_empty">아직 좋아요한 사진이 없습니다.</string>
+    <string name="photos_empty_title">표시할 사진이 없습니다.</string>
+    <string name="photos_empty_description">잠시 후 다시 확인해 주세요.</string>
+    <string name="detail_stale_notice">오프라인입니다. 저장된 정보만 표시합니다.</string>
+    <string name="detail_views">조회</string>
+    <string name="detail_downloads">다운로드</string>
+    <string name="detail_likes">좋아요</string>
+    <string name="detail_location">촬영 위치</string>
+    <string name="detail_camera">카메라</string>
+    <string name="detail_tags">태그</string>
+    <string name="detail_dimensions">해상도</string>
+    <string name="detail_dimensions_format">%1$d × %2$d</string>
+
+    <string name="favorite_save_failed">좋아요를 저장하지 못했습니다.</string>
+    <string name="download_started">다운로드를 시작했습니다.</string>
+    <string name="download_failed">다운로드에 실패했습니다.</string>
+    <string name="download_permission_denied">저장 권한이 없어 다운로드할 수 없습니다.</string>
+
+    <string name="error_network">네트워크에 연결할 수 없습니다.</string>
+    <string name="error_rate_limited">요청이 많아 잠시 후 다시 시도해 주세요.</string>
+    <string name="error_unauthorized">API 키가 유효하지 않습니다.</string>
+    <string name="error_not_found">사진을 찾을 수 없습니다.</string>
+    <string name="error_unexpected">문제가 발생했습니다.</string>
+</resources>

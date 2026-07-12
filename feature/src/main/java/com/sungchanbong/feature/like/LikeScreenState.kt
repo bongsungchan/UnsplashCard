@@ -6,9 +6,11 @@ import com.sungchanbong.core.architecture.UIState
 import com.sungchanbong.domain.models.Photo
 
 data class LikeScreenState(
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val photos: List<Photo> = emptyList(),
-) : UIState
+) : UIState {
+    val isEmpty: Boolean get() = !isLoading && photos.isEmpty()
+}
 
 sealed interface LikeScreenIntent : UIIntent {
     data class TogglePhotoLike(val photo: Photo) : LikeScreenIntent
