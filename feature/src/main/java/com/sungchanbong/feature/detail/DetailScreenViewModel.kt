@@ -3,11 +3,12 @@ package com.sungchanbong.feature.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.sungchanbong.core.R
 import com.sungchanbong.core.architecture.BaseViewModel
-import com.sungchanbong.domain.models.Photo
 import com.sungchanbong.domain.models.PhotoDetail
 import com.sungchanbong.domain.models.PhotoError
 import com.sungchanbong.domain.usecase.GetPhotosUseCase
+import com.sungchanbong.domain.usecase.PhotoDownloadUseCase
 import com.sungchanbong.domain.usecase.PhotoLikeUseCase
 import com.sungchanbong.feature.PhotoDetailRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class DetailScreenViewModel @Inject constructor(
     private val getPhotosUseCase: GetPhotosUseCase,
     private val photoLikeUseCase: PhotoLikeUseCase,
+    private val photoDownloadUseCase: PhotoDownloadUseCase,
     savedStateHandle: SavedStateHandle
 ) :
     BaseViewModel<DetailScreenState, DetailScreenIntent, DetailScreenEffect>(initialState = DetailScreenState()) {
@@ -34,17 +36,12 @@ class DetailScreenViewModel @Inject constructor(
     private val loadedDetail = MutableStateFlow<PhotoDetail?>(value = null)
     override fun onIntent(intent: DetailScreenIntent) {
         when (intent) {
-            is DetailScreenIntent.BackClicked -> {
-                postSideEffect(DetailScreenEffect.NavigateBack)
-            }
-
-            is DetailScreenIntent.TogglePhotoLike -> {
-                togglePhoto(intent.photo)
-            }
-
-            is DetailScreenIntent.Retry -> {
-                load()
-            }
+            is DetailScreenIntent.Retry -> load()
+            is DetailScreenIntent.TogglePhotoLike -> togglePhoto()
+            is DetailScreenIntent.DownloadClicked -> download()
+            is DetailScreenIntent.BackClicked -> postSideEffect(DetailScreenEffect.NavigateBack)
+            is DetailScreenIntent.MessageShown -> reduce { copy(message = null) }
+            is DetailScreenIntent.PermissionResult -> onPermissionResult(intent.granted)
         }
     }
 
@@ -66,7 +63,8 @@ class DetailScreenViewModel @Inject constructor(
                 reduce {
                     copy(
                         isLoading = false,
-                        error = e as? PhotoError ?: PhotoError.Unexpected(e)
+                        error = e as? PhotoError ?: PhotoError.Unexpected(e),
+                        message = R.string.error_unexpected
                     )
                 }
             }.launchIn(viewModelScope)
@@ -90,13 +88,48 @@ class DetailScreenViewModel @Inject constructor(
         }
     }
 
-    private fun togglePhoto(photo: Photo) {
+    private fun togglePhoto() {
+        val photo = currentState.detail?.photo ?: return
         viewModelScope.launch {
-            photoLikeUseCase.onToggle(photo).onSuccess {
-
-            }.onFailure {
-
+            photoLikeUseCase.onToggle(photo).onFailure {
+                reduce { copy(message = R.string.favorite_save_failed) }
             }
         }
     }
+
+    private fun download() {
+        if (currentState.isDownloading) return
+        if (currentState.detail == null) return
+        reduce { copy(isDownloading = true) }
+        if (photoDownloadUseCase.checkPermission()) {
+            postSideEffect(DetailScreenEffect.RequestStoragePermission)
+        } else {
+            save()
+        }
+    }
+
+    private fun save() {
+        val photo = currentState.detail?.photo ?: run {
+            finishDownload()
+            postSideEffect(DetailScreenEffect.DownloadFailed)
+            return
+        }
+        viewModelScope.launch {
+            photoDownloadUseCase.download(photo)
+                .onSuccess { postSideEffect(DetailScreenEffect.DownloadStarted) }
+                .onFailure { postSideEffect(DetailScreenEffect.DownloadFailed) }
+            finishDownload()
+        }
+    }
+
+    private fun onPermissionResult(granted: Boolean) {
+        if (granted) {
+            save()
+        } else {
+            finishDownload()
+            postSideEffect(DetailScreenEffect.DownloadPermissionDenied)
+        }
+    }
+
+    private fun finishDownload() = reduce { copy(isDownloading = false) }
 }

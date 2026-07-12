@@ -95,6 +95,12 @@ class PhotoRepositoryImpl @Inject constructor(
         return Result.success(cached.toStaleDetail())
     }
 
+    override suspend fun photoDownload(id: String): Result<String> = runCatchingDomain {
+        api.downloadPhoto(id).url ?: throw PhotoError.Unexpected(
+            IllegalStateException("download url missing in 200 response"),
+        )
+    }
+
     private inline fun <T> runCatchingDomain(block: () -> T): Result<T> =
         try {
             Result.success(block())

@@ -79,7 +79,7 @@ fun PhotoGridItem(
         ) {
             AsyncImage(
                 model = photo.authorProfileImageUrl,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.cd_author_profile_image),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(24.dp)

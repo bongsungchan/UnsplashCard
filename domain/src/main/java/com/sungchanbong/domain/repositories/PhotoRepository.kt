@@ -14,4 +14,5 @@ interface PhotoRepository {
 
     fun getLikedPhoto(): Flow<List<Photo>>
     fun observeIsPhotoLike(photoId: String): Flow<Boolean>
+    suspend fun photoDownload(id: String): Result<String>
 }

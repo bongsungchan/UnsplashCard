@@ -21,7 +21,7 @@ abstract class BaseViewModel<S : UIState, I : UIIntent, E : UIEffect>(initialSta
 
     private val _effect = Channel<E>(Channel.UNLIMITED)
     val effect: Flow<E> = _effect.receiveAsFlow()
-
+    protected val currentState: S get() = _state.value
     abstract fun onIntent(intent: I)
 
     protected fun reduce(reducer: S.() -> S) = _state.update(function = reducer)

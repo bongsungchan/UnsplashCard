@@ -1,6 +1,7 @@
 package com.sungchanbong.feature.like
 
 import androidx.lifecycle.viewModelScope
+import com.sungchanbong.core.R
 import com.sungchanbong.core.architecture.BaseViewModel
 import com.sungchanbong.domain.models.Photo
 import com.sungchanbong.domain.usecase.PhotoLikeUseCase
@@ -31,6 +32,12 @@ class LikeScreenViewModel @Inject constructor(
             is LikeScreenIntent.BackClicked -> {
                 postSideEffect(LikeScreenEffect.NavigateBack)
             }
+
+            is LikeScreenIntent.MessageShown -> {
+                reduce {
+                    copy(message = null)
+                }
+            }
         }
     }
 
@@ -44,17 +51,15 @@ class LikeScreenViewModel @Inject constructor(
                 }
             }
             .catch {
-                reduce { copy(isLoading = false) }
+                reduce { copy(isLoading = false, message = R.string.error_unexpected) }
             }
             .launchIn(viewModelScope)
     }
 
     private fun togglePhoto(photo: Photo) {
         viewModelScope.launch {
-            photoLikeUseCase.onToggle(photo).onSuccess {
-
-            }.onFailure {
-
+            photoLikeUseCase.onToggle(photo).onFailure {
+                reduce { copy(message = R.string.favorite_save_failed) }
             }
         }
     }

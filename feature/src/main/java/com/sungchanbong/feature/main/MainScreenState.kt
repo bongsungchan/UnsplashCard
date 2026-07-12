@@ -1,12 +1,13 @@
 package com.sungchanbong.feature.main
 
+import androidx.annotation.StringRes
 import com.sungchanbong.core.architecture.UIEffect
 import com.sungchanbong.core.architecture.UIIntent
 import com.sungchanbong.core.architecture.UIState
 import com.sungchanbong.domain.models.Photo
 
 data class MainScreenState(
-    val isLoading: Boolean = false
+    @StringRes val message: Int? = null,
 ) : UIState
 
 sealed interface MainScreenIntent : UIIntent {
@@ -14,7 +15,7 @@ sealed interface MainScreenIntent : UIIntent {
     data class TogglePhotoLike(val photo: Photo) : MainScreenIntent
     data object PhotoLikeClicked : MainScreenIntent
     data object RetryClicked : MainScreenIntent
-
+    data object MessageShown : MainScreenIntent
 }
 
 sealed interface MainScreenEffect : UIEffect {

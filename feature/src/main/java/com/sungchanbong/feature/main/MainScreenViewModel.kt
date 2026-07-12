@@ -3,6 +3,7 @@ package com.sungchanbong.feature.main
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.sungchanbong.core.R
 import com.sungchanbong.core.architecture.BaseViewModel
 import com.sungchanbong.domain.models.Photo
 import com.sungchanbong.domain.usecase.GetPhotosUseCase
@@ -36,15 +37,20 @@ class MainScreenViewModel @Inject constructor(
             is MainScreenIntent.RetryClicked -> {
                 postSideEffect(MainScreenEffect.RetryPaging)
             }
+
+            is MainScreenIntent.MessageShown -> {
+                reduce {
+                    copy(message = null)
+                }
+            }
         }
     }
 
     private fun togglePhoto(photo: Photo) {
         viewModelScope.launch {
-            photoLikeUseCase.onToggle(photo).onSuccess {
-
-            }.onFailure {
-
+            photoLikeUseCase.onToggle(photo).onFailure {
+                // 문구가 아니라 리소스 id 를 싣는다. ViewModel 은 어떤 언어로 말할지 모른다.
+                reduce { copy(message = R.string.favorite_save_failed) }
             }
         }
     }
