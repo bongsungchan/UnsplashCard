@@ -39,6 +39,9 @@ fun MainScreen(
             onPhotoClick = { photoId ->
                 mainScreenViewModel.onIntent(intent = MainScreenIntent.PhotoClicked(photoId = photoId))
             },
+            onPhotoLikeClick = {
+                mainScreenViewModel.onIntent(intent = MainScreenIntent.TogglePhotoLike(it))
+            },
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)

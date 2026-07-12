@@ -3,6 +3,7 @@ package com.sungchanbong.data.mapper
 import com.bccard.unsplashexplorer.data.remote.dto.PhotoDetailDto
 import com.bccard.unsplashexplorer.data.remote.dto.PhotoDto
 import com.bccard.unsplashexplorer.data.remote.dto.UrlsDto
+import com.sungchanbong.data.entities.LikePhotoEntity
 import com.sungchanbong.data.entities.PhotoEntity
 import com.sungchanbong.data.entities.PhotoWithLike
 import com.sungchanbong.domain.models.Photo
@@ -71,4 +72,18 @@ fun PhotoDetailDto.toDomain(isLike: Boolean): PhotoDetail = PhotoDetail(
     },
     exifModel = exif?.let { listOfNotNull(it.make, it.model).joinToString(" ").ifBlank { null } },
     tags = tags?.mapNotNull { it.title }.orEmpty()
+)
+
+fun Photo.toFavoriteEntity(savedAt: Long): LikePhotoEntity = LikePhotoEntity(
+    id = id,
+    description = description,
+    thumbUrl = thumbUrl,
+    fullUrl = fullUrl,
+    width = width,
+    height = height,
+    authorName = authorName,
+    authorUsername = authorUsername,
+    authorProfileImageUrl = authorProfileImageUrl,
+    likes = likes,
+    savedAt = savedAt,
 )

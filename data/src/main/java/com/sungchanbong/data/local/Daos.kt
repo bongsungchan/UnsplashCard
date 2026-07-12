@@ -97,6 +97,18 @@ interface LikePhotoDao {
     @Query("DELETE FROM like_photos WHERE id = :id")
     suspend fun delete(id: String)
 
+    @Query("SELECT EXISTS(SELECT 1 FROM like_photos WHERE id = :id)")
+    suspend fun exists(id: String): Boolean
+
+    @Transaction
+    suspend fun toggle(entity: LikePhotoEntity): Boolean =
+        if (exists(entity.id)) {
+            delete(entity.id)
+            false
+        } else {
+            insert(entity)
+            true
+        }
 }
 
 

@@ -8,6 +8,7 @@ import androidx.paging.map
 import com.sungchanbong.data.local.LikePhotoDao
 import com.sungchanbong.data.local.PhotoDao
 import com.sungchanbong.data.mapper.toDomain
+import com.sungchanbong.data.mapper.toFavoriteEntity
 import com.sungchanbong.data.paging.PhotoMediator
 import com.sungchanbong.data.remote.UnsplashAPI
 import com.sungchanbong.domain.models.Photo
@@ -50,4 +51,17 @@ class PhotoRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override suspend fun togglePhotoLike(photo: Photo): Result<Unit> {
+        return try {
+            likePhotoDao.toggle(entity = photo.toFavoriteEntity(System.currentTimeMillis()))
+            Result.success(Unit)
+        } catch (
+            e: Exception
+        ) {
+            Result.failure(e)
+        }
+    }
+
+
 }

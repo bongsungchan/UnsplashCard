@@ -9,4 +9,6 @@ interface PhotoRepository {
     fun getPhotos(): Flow<PagingData<Photo>>
 
     suspend fun getPhotoDetail(photoId: String): Result<PhotoDetail>
+
+    suspend fun togglePhotoLike(photo: Photo): Result<Unit>
 }

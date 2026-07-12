@@ -19,6 +19,7 @@ import com.sungchanbong.domain.models.Photo
 internal fun PhotoGrid(
     photos: LazyPagingItems<Photo>,
     onPhotoClick: (String) -> Unit,
+    onPhotoLikeClick: (Photo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
@@ -40,7 +41,7 @@ internal fun PhotoGrid(
                         photo = photo,
                         onClick = { onPhotoClick(photo.id) },
                         onClickLike = {
-
+                            onPhotoLikeClick(photo)
                         }
                     )
                 }
