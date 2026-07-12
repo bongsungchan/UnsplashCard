@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sungchanbong.core.architecture.CollectAsEffect
+import com.sungchanbong.core.design_system.component.LikeButton
 import com.sungchanbong.feature.detail.ui.DetailContent
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +50,11 @@ fun DetailScreen(
                     }
                 },
                 actions = {
-
+                    state.detail?.let { detail ->
+                        LikeButton(onClick = {
+                            viewModel.onIntent(DetailScreenIntent.TogglePhotoLike(detail.photo))
+                        }, isLike = detail.photo.isLike)
+                    }
                 }
             )
         }

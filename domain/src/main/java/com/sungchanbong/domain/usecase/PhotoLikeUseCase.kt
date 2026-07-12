@@ -13,4 +13,7 @@ class PhotoLikeUseCase @Inject constructor(
     }
 
     suspend fun getLikedPhoto(): Flow<List<Photo>> = repository.getLikedPhoto()
+
+    fun observeIsPhotoLike(photoId: String): Flow<Boolean> =
+        repository.observeIsPhotoLike(photoId = photoId)
 }

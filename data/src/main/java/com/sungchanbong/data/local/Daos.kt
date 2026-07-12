@@ -113,6 +113,9 @@ interface LikePhotoDao {
 
     @Query("SELECT * FROM like_photos ORDER BY savedAt DESC")
     fun observeFavorites(): Flow<List<LikePhotoEntity>>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM like_photos WHERE id = :id)")
+    fun observeExists(id: String): Flow<Boolean>
 }
 
 

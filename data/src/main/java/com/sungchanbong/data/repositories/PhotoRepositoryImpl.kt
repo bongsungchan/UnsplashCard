@@ -15,6 +15,7 @@ import com.sungchanbong.domain.models.Photo
 import com.sungchanbong.domain.models.PhotoDetail
 import com.sungchanbong.domain.repositories.PhotoRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -69,6 +70,10 @@ class PhotoRepositoryImpl @Inject constructor(
                 it.toDomain()
             }
         }
+    }
+
+    override fun observeIsPhotoLike(photoId: String): Flow<Boolean> {
+        return likePhotoDao.observeExists(id = photoId).distinctUntilChanged()
     }
 
 
