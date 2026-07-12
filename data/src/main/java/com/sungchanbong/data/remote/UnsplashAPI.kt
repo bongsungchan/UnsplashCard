@@ -1,4 +1,4 @@
-package com.sungchanbong.data
+package com.sungchanbong.data.remote
 
 import retrofit2.http.GET
 import retrofit2.http.Path

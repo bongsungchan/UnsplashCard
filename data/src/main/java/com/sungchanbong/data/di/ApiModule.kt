@@ -1,7 +1,9 @@
-package com.sungchanbong.data
+package com.sungchanbong.data.di
 
 import android.content.Context
 import com.squareup.moshi.Moshi
+import com.sungchanbong.data.BuildConfig
+import com.sungchanbong.data.remote.UnsplashAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -77,5 +79,3 @@ object ApiModule {
     private const val HTTP_CACHE_DIR = "http_cache"
     private const val HTTP_CACHE_SIZE_BYTES = 20L * 1024 * 1024
 }
-
-
