@@ -87,6 +87,9 @@ interface PhotoDao {
     @Query("SELECT MAX(sortIndex) FROM photos")
     suspend fun maxSortIndex(): Int?
 
+    @Query("SELECT * FROM photos WHERE id = :id LIMIT 1")
+    suspend fun findById(id: String): PhotoEntity?
+
 }
 
 @Dao
@@ -116,6 +119,9 @@ interface LikePhotoDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM like_photos WHERE id = :id)")
     fun observeExists(id: String): Flow<Boolean>
+
+    @Query("SELECT * FROM like_photos WHERE id = :id LIMIT 1")
+    suspend fun findById(id: String): LikePhotoEntity?
 }
 
 

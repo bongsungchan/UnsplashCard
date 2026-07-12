@@ -20,5 +20,6 @@ data class PhotoDetail(
     val downloads: Int?,
     val location: String?,
     val exifModel: String?,
-    val tags: List<String>
+    val tags: List<String>,
+    val isStale: Boolean
 )
