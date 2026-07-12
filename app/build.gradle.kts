@@ -1,6 +1,7 @@
 plugins {
     id("sungchanbong.android.application")
     id("sungchanbong.android.compose")
+    id("sungchanbong.android.hilt")
 }
 
 android {
@@ -36,4 +37,5 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.coil.compose)
+    kspAndroidTest(libs.hilt.compiler)
 }
