@@ -9,9 +9,9 @@ data class MainScreenState(
 ) : UIState
 
 sealed interface MainScreenIntent : UIIntent {
-
+    data class PhotoClicked(val photoId: String) : MainScreenIntent
 }
 
 sealed interface MainScreenEffect : UIEffect {
-
+    data class NavigateToDetail(val photoId: String) : MainScreenEffect
 }

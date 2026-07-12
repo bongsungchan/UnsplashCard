@@ -13,3 +13,12 @@ data class Photo(
     val likes: Int = 0,
     val isLike: Boolean = false,
 )
+
+data class PhotoDetail(
+    val photo: Photo,
+    val views: Int?,
+    val downloads: Int?,
+    val location: String?,
+    val exifModel: String?,
+    val tags: List<String>
+)

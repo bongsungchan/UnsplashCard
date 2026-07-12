@@ -5,11 +5,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.sungchanbong.data.local.LikePhotoDao
 import com.sungchanbong.data.local.PhotoDao
 import com.sungchanbong.data.mapper.toDomain
 import com.sungchanbong.data.paging.PhotoMediator
 import com.sungchanbong.data.remote.UnsplashAPI
 import com.sungchanbong.domain.models.Photo
+import com.sungchanbong.domain.models.PhotoDetail
 import com.sungchanbong.domain.repositories.PhotoRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,6 +23,7 @@ import javax.inject.Singleton
 class PhotoRepositoryImpl @Inject constructor(
     private val api: UnsplashAPI,
     private val photoDao: PhotoDao,
+    private val likePhotoDao: LikePhotoDao,
     private val photoMediator: PhotoMediator
 ) : PhotoRepository {
 
@@ -37,6 +40,14 @@ class PhotoRepositoryImpl @Inject constructor(
             }
         ).flow.map { pagingData ->
             pagingData.map { it.toDomain() }
+        }
+    }
+
+    override suspend fun getPhotoDetail(photoId: String): Result<PhotoDetail> {
+        return try {
+            Result.success(api.getPhotoDetail(id = photoId).toDomain(false))
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }

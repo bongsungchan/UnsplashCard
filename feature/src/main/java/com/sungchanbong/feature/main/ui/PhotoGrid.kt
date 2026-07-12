@@ -37,13 +37,11 @@ internal fun PhotoGrid(
                 val photo = photos[index]
                 if (photo != null) {
                     PhotoGridItem(
-                        photoUrl = photo.thumbUrl,
+                        photo = photo,
                         onClick = { onPhotoClick(photo.id) },
                         onClickLike = {
 
-                        },
-                        name = photo.authorName,
-                        isLike = photo.isLike
+                        }
                     )
                 }
             }

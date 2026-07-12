@@ -21,28 +21,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.sungchanbong.domain.models.Photo
 
 private const val GRID_ITEM_ASPECT_RATIO = 0.7f
 private val SCRIM_COLOR = Color(0x99000000)
 
 @Composable
 fun PhotoGridItem(
-    photoUrl: String,
-    name: String,
-    isLike: Boolean = false,
+    photo: Photo,
     onClick: () -> Unit,
     onClickLike: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
-    val request = remember(photoUrl) {
+    val request = remember(photo.thumbUrl) {
         ImageRequest.Builder(context)
-            .data(photoUrl)
+            .data(photo.thumbUrl)
             .crossfade(true)
             .build()
     }
@@ -70,7 +68,7 @@ fun PhotoGridItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(
-                model = photoUrl,
+                model = photo.authorProfileImageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -79,7 +77,7 @@ fun PhotoGridItem(
                     .background(MaterialTheme.colorScheme.surfaceVariant),
             )
             Text(
-                text = name,
+                text = photo.authorName,
                 color = Color.White,
                 style = MaterialTheme.typography.labelSmall,
                 maxLines = 1,
@@ -89,22 +87,10 @@ fun PhotoGridItem(
                     .weight(1f),
             )
             LikeButton(
-                isLike = isLike,
+                isLike = photo.isLike,
                 onClick = onClickLike,
                 iconSize = 18,
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun PhotoGridPreview() {
-    PhotoGridItem(
-        photoUrl = "https://example.com/photo.jpg",
-        name = "test",
-        isLike = true,
-        onClick = {},
-        onClickLike = {}
-    )
 }

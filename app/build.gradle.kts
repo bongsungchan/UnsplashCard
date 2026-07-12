@@ -2,6 +2,7 @@ plugins {
     id("sungchanbong.android.application")
     id("sungchanbong.android.compose")
     id("sungchanbong.android.hilt")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {

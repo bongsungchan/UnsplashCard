@@ -4,6 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.sungchanbong.feature.LikePhotoRoute
+import com.sungchanbong.feature.MainListRoute
+import com.sungchanbong.feature.PhotoDetailRoute
 import com.sungchanbong.feature.detail.DetailScreen
 import com.sungchanbong.feature.like.LikeScreen
 import com.sungchanbong.feature.main.MainScreen
@@ -11,14 +14,20 @@ import com.sungchanbong.feature.main.MainScreen
 @Composable
 fun NavigationGraph() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Routes.MAIN) {
-        composable(Routes.MAIN) {
-            MainScreen()
+    NavHost(navController = navController, startDestination = MainListRoute) {
+        composable<MainListRoute> {
+            MainScreen(
+                onNavigateToDetail = {
+                    navController.navigateOnce(PhotoDetailRoute(photoId = it))
+                }
+            )
         }
-        composable(Routes.DETAIL) {
-            DetailScreen()
+        composable<PhotoDetailRoute> {
+            DetailScreen(
+                onNavigateBack = {}
+            )
         }
-        composable(Routes.LIKE) {
+        composable<LikePhotoRoute> {
             LikeScreen()
         }
     }

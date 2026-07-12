@@ -10,4 +10,5 @@ class GetPhotosUseCase @Inject constructor(
     private val repository: PhotoRepository,
 ) {
     operator fun invoke(): Flow<PagingData<Photo>> = repository.getPhotos()
+    suspend fun getDetail(photoId : String) = repository.getPhotoDetail(photoId = photoId)
 }

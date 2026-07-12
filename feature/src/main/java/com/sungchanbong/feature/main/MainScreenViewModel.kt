@@ -18,6 +18,13 @@ class MainScreenViewModel @Inject constructor(
 
     val photos: Flow<PagingData<Photo>> = getPhotosUseCase().cachedIn(viewModelScope)
     override fun onIntent(intent: MainScreenIntent) {
+        when (intent) {
+            is MainScreenIntent.PhotoClicked -> postSideEffect(
+                MainScreenEffect.NavigateToDetail(
+                    intent.photoId
+                )
+            )
+        }
     }
 
 }
