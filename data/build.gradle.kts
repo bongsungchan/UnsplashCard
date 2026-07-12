@@ -1,32 +1,31 @@
+
 plugins {
-    alias(libs.plugins.android.library)
+    id("sungchanbong.android.library")
+    id("sungchanbong.android.hilt")
 }
 
 android {
     namespace = "com.sungchanbong.data"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
 
-    defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
+    buildFeatures { buildConfig = true }
 }
 
 dependencies {
-    implementation(libs.androidx.appcompat)
+    implementation(project(":domain"))
+
     implementation(libs.androidx.core.ktx)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.junit)
+    implementation(libs.paging.runtime)
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.moshi)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.moshi)
+    ksp(libs.moshi.kotlin.codegen)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.paging)
+    ksp(libs.room.compiler)
+
 }

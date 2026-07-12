@@ -1,4 +1,4 @@
-package com.sungchanbong.build_logic
+package com.sungchanbong.unsplashcard.buildlogic
 
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
