@@ -23,7 +23,7 @@ fun LikeButton(
         Icon(
             imageVector = if (isLike) Icons.Filled.Favorite else Icons.Outlined.Favorite,
             contentDescription = null,
-            tint = if (isLike) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = if (isLike) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
             modifier = Modifier.size(iconSize.dp)
         )
     }
@@ -32,5 +32,5 @@ fun LikeButton(
 @Preview
 @Composable
 fun LikeButtonPreview() {
-    LikeButton(onClick = {}, modifier = Modifier, isLike = true)
+    LikeButton(onClick = {}, modifier = Modifier, isLike = false)
 }

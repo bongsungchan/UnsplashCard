@@ -33,7 +33,7 @@ private val SCRIM_COLOR = Color(0x99000000)
 fun PhotoGridItem(
     photoUrl: String,
     name: String,
-    isLike: Boolean,
+    isLike: Boolean = false,
     onClick: () -> Unit,
     onClickLike: () -> Unit,
     modifier: Modifier = Modifier,

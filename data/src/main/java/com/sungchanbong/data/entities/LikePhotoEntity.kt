@@ -1,5 +1,6 @@
 package com.sungchanbong.data.entities
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -20,4 +21,9 @@ data class LikePhotoEntity(
     val authorProfileImageUrl: String?,
     val likes: Int,
     val savedAt: Long,
+)
+
+data class PhotoWithLike(
+    @Embedded val photo: PhotoEntity,
+    val isLike: Boolean,
 )
