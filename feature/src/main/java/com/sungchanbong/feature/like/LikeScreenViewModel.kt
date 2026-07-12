@@ -12,9 +12,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LikeScreenViewModel @Inject constructor(
-    private val photoLikeUseCase: PhotoLikeUseCase
+    private val photoLikeUseCase: PhotoLikeUseCase,
 ) :
     BaseViewModel<LikeScreenState, LikeScreenIntent, LikeScreenEffect>(initialState = LikeScreenState()) {
+
+    private val prefetched = mutableSetOf<String>()
     override fun onIntent(intent: LikeScreenIntent) {
         when (intent) {
             is LikeScreenIntent.TogglePhotoLike -> {
@@ -32,11 +34,15 @@ class LikeScreenViewModel @Inject constructor(
     }
 
     init {
-        viewModelScope.launch {
-            photoLikeUseCase.getLikedPhoto().onEach { photos ->
+        photoLikeUseCase.getLikedPhoto()
+            .onEach { photos ->
                 reduce { copy(photos = photos) }
-            }.launchIn(viewModelScope)
-        }
+                val newcomers = photos.filter { prefetched.add(it.id) }
+                if (newcomers.isNotEmpty()) {
+                    photoLikeUseCase.prefetchLikedPhoto(newcomers)
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun togglePhoto(photo: Photo) {

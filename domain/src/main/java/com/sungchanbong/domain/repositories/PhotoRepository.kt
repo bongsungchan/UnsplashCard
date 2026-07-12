@@ -12,6 +12,6 @@ interface PhotoRepository {
 
     suspend fun togglePhotoLike(photo: Photo): Result<Unit>
 
-    suspend fun getLikedPhoto(): Flow<List<Photo>>
+    fun getLikedPhoto(): Flow<List<Photo>>
     fun observeIsPhotoLike(photoId: String): Flow<Boolean>
 }

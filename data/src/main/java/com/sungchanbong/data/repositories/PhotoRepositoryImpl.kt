@@ -11,6 +11,7 @@ import com.sungchanbong.data.mapper.toDomain
 import com.sungchanbong.data.mapper.toFavoriteEntity
 import com.sungchanbong.data.paging.PhotoMediator
 import com.sungchanbong.data.remote.UnsplashAPI
+import com.sungchanbong.data.util.Clock
 import com.sungchanbong.domain.models.Photo
 import com.sungchanbong.domain.models.PhotoDetail
 import com.sungchanbong.domain.repositories.PhotoRepository
@@ -26,14 +27,15 @@ class PhotoRepositoryImpl @Inject constructor(
     private val api: UnsplashAPI,
     private val photoDao: PhotoDao,
     private val likePhotoDao: LikePhotoDao,
-    private val photoMediator: PhotoMediator
+    private val photoMediator: PhotoMediator,
+    private val clock: Clock,
 ) : PhotoRepository {
 
     override fun getPhotos(): Flow<PagingData<Photo>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 20,
-                prefetchDistance = 10,
+                pageSize = PAGE_SIZE,
+                prefetchDistance = PAGE_SIZE / 2,
                 enablePlaceholders = true
             ),
             remoteMediator = photoMediator,
@@ -55,7 +57,7 @@ class PhotoRepositoryImpl @Inject constructor(
 
     override suspend fun togglePhotoLike(photo: Photo): Result<Unit> {
         return try {
-            likePhotoDao.toggle(entity = photo.toFavoriteEntity(System.currentTimeMillis()))
+            likePhotoDao.toggle(entity = photo.toFavoriteEntity(clock.now()))
             Result.success(Unit)
         } catch (
             e: Exception
@@ -64,7 +66,7 @@ class PhotoRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getLikedPhoto(): Flow<List<Photo>> {
+    override fun getLikedPhoto(): Flow<List<Photo>> {
         return likePhotoDao.observeFavorites().map { entities ->
             entities.map {
                 it.toDomain()
@@ -76,5 +78,8 @@ class PhotoRepositoryImpl @Inject constructor(
         return likePhotoDao.observeExists(id = photoId).distinctUntilChanged()
     }
 
+    private companion object {
+        const val PAGE_SIZE = 20
+    }
 
 }
