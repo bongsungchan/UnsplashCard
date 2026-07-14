@@ -31,6 +31,7 @@ import com.sungchanbong.core.design_system.component.ErrorContent
 import com.sungchanbong.core.design_system.component.GRID_COLUMNS
 import com.sungchanbong.core.design_system.component.GRID_ITEM_ASPECT_RATIO
 import com.sungchanbong.core.design_system.component.PhotoGridItem
+import com.sungchanbong.core.design_system.component.PhotoGridPlaceholder
 import com.sungchanbong.core.design_system.component.toUserMessage
 import com.sungchanbong.domain.models.Photo
 
@@ -90,7 +91,6 @@ internal fun PhotoGrid(
                         onClickLike = { onPhotoLikeClick(photo) },
                     )
                 } else {
-
                     PhotoGridPlaceholder()
                 }
             }
@@ -128,14 +128,3 @@ internal fun PhotoGrid(
 private fun LazyGridItemSpanScope.fullSpan(): GridItemSpan = GridItemSpan(maxLineSpan)
 
 private const val CONTENT_TYPE_FOOTER = "footer"
-
-@Composable
-fun PhotoGridPlaceholder(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .aspectRatio(GRID_ITEM_ASPECT_RATIO)
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant),
-    )
-}

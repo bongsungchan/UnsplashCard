@@ -27,6 +27,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sungchanbong.core.R
+import com.sungchanbong.core.design_system.preview.ThemePreviews
+import com.sungchanbong.core.design_system.preview.previewPhoto
+import com.sungchanbong.core.design_system.theme.UnsplashcardTheme
 import com.sungchanbong.domain.models.Photo
 
 private val SCRIM_COLOR = Color(0x99000000)
@@ -103,5 +106,53 @@ fun PhotoGridItem(
                 unfavoriteTint = Color.White,
             )
         }
+    }
+}
+@Composable
+fun PhotoGridPlaceholder(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(GRID_ITEM_ASPECT_RATIO)
+            .clip(RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant),
+    )
+}
+
+@ThemePreviews
+@Composable
+private fun PhotoGridItemPreview() {
+    UnsplashcardTheme {
+        PhotoGridItem(
+            photo = previewPhoto(isLike = false),
+            onClickLike = {},
+            onClick = {},
+            modifier = Modifier.padding(8.dp)
+        )
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun PhotoGridItemNoDescription() {
+    UnsplashcardTheme {
+        PhotoGridItem(
+            photo = previewPhoto(description = null, isLike = false),
+            onClickLike = {},
+            onClick = {},
+            modifier = Modifier.padding(8.dp)
+        )
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun PhotoGridPlaceholderPreview() {
+    UnsplashcardTheme {
+        PhotoGridPlaceholder(
+            modifier = Modifier.padding(
+                8.dp
+            )
+        )
     }
 }
