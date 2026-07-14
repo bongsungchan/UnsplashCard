@@ -18,6 +18,7 @@
     <string name="action_download">다운로드</string>
 
     <string name="favorites_empty">아직 좋아요한 사진이 없습니다.</string>
+    <string name="favorites_empty_description">마음에 드는 사진의 하트를 눌러 보세요.</string>
     <string name="photos_empty_title">표시할 사진이 없습니다.</string>
     <string name="photos_empty_description">잠시 후 다시 확인해 주세요.</string>
     <string name="detail_stale_notice">오프라인입니다. 저장된 정보만 표시합니다.</string>

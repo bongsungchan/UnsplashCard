@@ -1,8 +1,8 @@
 package com.sungchanbong.data.remote
 
-import com.bccard.unsplashexplorer.data.remote.dto.DownloadDto
-import com.bccard.unsplashexplorer.data.remote.dto.PhotoDetailDto
-import com.bccard.unsplashexplorer.data.remote.dto.PhotoDto
+import com.sungchanbong.data.remote.dto.DownloadDto
+import com.sungchanbong.data.remote.dto.PhotoDetailDto
+import com.sungchanbong.data.remote.dto.PhotoDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

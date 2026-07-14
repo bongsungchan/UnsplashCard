@@ -1,4 +1,4 @@
-package com.bccard.unsplashexplorer.data.remote.dto
+package com.sungchanbong.data.remote.dto
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

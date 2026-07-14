@@ -69,7 +69,10 @@ class PhotoRepositoryImpl @Inject constructor(
     } catch (e: IOException) {
         fallbackToCache(photoId) ?: Result.failure(e.toPhotoError())
     } catch (e: HttpException) {
-        fallbackToCache(photoId) ?: Result.failure(e.toPhotoError())
+        when (val error = e.toPhotoError()) {
+            PhotoError.RateLimited -> fallbackToCache(photoId) ?: Result.failure(error)
+            else -> Result.failure(error)
+        }
     }
 
     override suspend fun togglePhotoLike(photo: Photo): Result<Unit> = runCatchingDomain {

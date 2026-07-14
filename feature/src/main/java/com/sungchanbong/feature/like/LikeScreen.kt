@@ -74,12 +74,14 @@ fun LikeScreen(
             photos = state.photos,
             isLoading = state.isLoading,
             isEmpty = state.isEmpty,
+            error = state.error,
             onPhotoLikeClick = {
                 viewModel.onIntent(LikeScreenIntent.TogglePhotoLike(it))
             },
             onPhotoClick = {
                 viewModel.onIntent(LikeScreenIntent.PhotoClicked(it))
             },
+            onRetry = { viewModel.onIntent(LikeScreenIntent.RetryClicked) },
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)

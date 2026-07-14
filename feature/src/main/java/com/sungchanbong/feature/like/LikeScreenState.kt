@@ -5,13 +5,15 @@ import com.sungchanbong.core.architecture.UIEffect
 import com.sungchanbong.core.architecture.UIIntent
 import com.sungchanbong.core.architecture.UIState
 import com.sungchanbong.domain.models.Photo
+import com.sungchanbong.domain.models.PhotoError
 
 data class LikeScreenState(
     val isLoading: Boolean = true,
     val photos: List<Photo> = emptyList(),
     @StringRes val message: Int? = null,
+    val error: PhotoError? = null,
 ) : UIState {
-    val isEmpty: Boolean get() = !isLoading && photos.isEmpty()
+    val isEmpty: Boolean get() = !isLoading && error == null && photos.isEmpty()
 }
 
 sealed interface LikeScreenIntent : UIIntent {
@@ -19,6 +21,7 @@ sealed interface LikeScreenIntent : UIIntent {
     data class PhotoClicked(val photoId: String) : LikeScreenIntent
     data object BackClicked : LikeScreenIntent
     data object MessageShown : LikeScreenIntent
+    data object RetryClicked : LikeScreenIntent
 }
 
 sealed interface LikeScreenEffect : UIEffect {

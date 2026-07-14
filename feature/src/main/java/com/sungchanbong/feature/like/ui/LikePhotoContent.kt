@@ -17,17 +17,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sungchanbong.core.R
 import com.sungchanbong.core.design_system.component.CONTENT_TYPE_PHOTO
+import com.sungchanbong.core.design_system.component.EmptyContent
+import com.sungchanbong.core.design_system.component.ErrorContent
 import com.sungchanbong.core.design_system.component.GRID_COLUMNS
 import com.sungchanbong.core.design_system.component.PhotoGridItem
+import com.sungchanbong.core.design_system.component.toMessage
 import com.sungchanbong.domain.models.Photo
+import com.sungchanbong.domain.models.PhotoError
 
 @Composable
 fun LikePhotoContents(
     photos: List<Photo>,
     isLoading: Boolean,
     isEmpty: Boolean,
+    error: PhotoError?,
     onPhotoClick: (String) -> Unit,
     onPhotoLikeClick: (Photo) -> Unit,
+    onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
@@ -36,12 +42,15 @@ fun LikePhotoContents(
             CircularProgressIndicator(Modifier.align(Alignment.Center))
             return@Box
         }
+        if (error != null) {
+            ErrorContent(message = error.toMessage(), onRetry = onRetry)
+            return@Box
+        }
+
         if (isEmpty) {
-            Text(
-                text = stringResource(R.string.favorites_empty),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.align(Alignment.Center),
+            EmptyContent(
+                title = stringResource(R.string.favorites_empty),
+                description = stringResource(R.string.favorites_empty_description),
             )
             return@Box
         }
