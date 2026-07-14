@@ -14,6 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sungchanbong.core.R
+import com.sungchanbong.core.design_system.preview.ThemePreviews
+import com.sungchanbong.core.design_system.theme.UnsplashcardTheme
 import com.sungchanbong.domain.models.PhotoError
 
 @Composable
@@ -50,5 +52,16 @@ fun ErrorContent(
         TextButton(onClick = onRetry) {
             Text(stringResource(R.string.action_retry))
         }
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun ErrorContentPreview() {
+    UnsplashcardTheme() {
+        ErrorContent(
+            message = stringResource(
+                R.string.error_network
+            ), onRetry = {})
     }
 }

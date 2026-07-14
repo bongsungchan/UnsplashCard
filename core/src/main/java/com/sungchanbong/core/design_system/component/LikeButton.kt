@@ -1,5 +1,6 @@
 package com.sungchanbong.core.design_system.component
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -14,6 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sungchanbong.core.R
+import com.sungchanbong.core.design_system.preview.ThemePreviews
+import com.sungchanbong.core.design_system.theme.UnsplashcardTheme
 
 @Composable
 fun LikeButton(
@@ -37,8 +40,13 @@ fun LikeButton(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
-fun LikeButtonPreview() {
-    LikeButton(onClick = {}, modifier = Modifier, isLike = false)
+private fun FavoriteButtonPreview() {
+    UnsplashcardTheme() {
+        Row {
+            LikeButton(isLike = false, onClick = {})
+            LikeButton(isLike = true, onClick = {})
+        }
+    }
 }
