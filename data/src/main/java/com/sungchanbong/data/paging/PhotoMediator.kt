@@ -5,12 +5,19 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.squareup.moshi.JsonDataException
+import com.squareup.moshi.JsonEncodingException
 import com.sungchanbong.data.entities.PhotoWithLike
 import com.sungchanbong.data.entities.RemoteKeyEntity
 import com.sungchanbong.data.local.AppDatabase
 import com.sungchanbong.data.mapper.toEntityOrNull
+import com.sungchanbong.data.mapper.toPhotoError
 import com.sungchanbong.data.remote.UnsplashAPI
 import com.sungchanbong.data.util.Clock
+import com.sungchanbong.domain.models.PhotoError
+import kotlinx.coroutines.CancellationException
+import retrofit2.HttpException
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -82,8 +89,16 @@ class PhotoMediator @Inject constructor(
                 )
             }
             MediatorResult.Success(endOfPaginationReached = endOfPagination)
-        } catch (e: Exception) {
-            MediatorResult.Error(e)
+        }catch (e: CancellationException) {
+            throw e
+        } catch (e: JsonEncodingException) {
+            MediatorResult.Error(PhotoError.Unexpected(e))
+        } catch (e: JsonDataException) {
+            MediatorResult.Error(PhotoError.Unexpected(e))
+        } catch (e: IOException) {
+            MediatorResult.Error(e.toPhotoError())
+        } catch (e: HttpException) {
+            MediatorResult.Error(e.toPhotoError())
         }
     }
 
