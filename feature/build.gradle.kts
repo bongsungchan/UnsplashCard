@@ -7,7 +7,10 @@ plugins {
 
 android {
     namespace = "com.sungchanbong.feature"
-
+    testOptions.unitTests {
+        isReturnDefaultValues = true
+        isIncludeAndroidResources = true
+    }
 }
 
 dependencies {
@@ -18,4 +21,10 @@ dependencies {
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
     implementation(libs.coil.compose)
+
+    testImplementation(libs.paging.testing)
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.androidx.ui.test.junit4)
+    testImplementation(libs.robolectric)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }
