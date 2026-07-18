@@ -43,4 +43,11 @@ dependencies {
     implementation(libs.room.paging)
     ksp(libs.room.compiler)
 
+    testImplementation(libs.paging.testing)
+    testImplementation(libs.robolectric)
+
+    testImplementation(libs.mockwebserver)
+    testImplementation(libs.room.testing)
+    testImplementation(libs.androidx.test.core)
+
 }
