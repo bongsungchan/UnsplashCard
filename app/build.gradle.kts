@@ -39,4 +39,13 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.coil.compose)
     kspAndroidTest(libs.hilt.compiler)
+
+    androidTestImplementation(project(":domain"))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.paging.common)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }
