@@ -20,10 +20,20 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.sungchanbong.core.R
 import com.sungchanbong.core.architecture.CollectAsEffect
+import com.sungchanbong.core.design_system.preview.ThemePreviews
+import com.sungchanbong.core.design_system.preview.previewPhotos
+import com.sungchanbong.core.design_system.theme.UnsplashcardTheme
+import com.sungchanbong.domain.models.Photo
+import com.sungchanbong.domain.models.PhotoError
 import com.sungchanbong.feature.main.ui.PhotoGrid
+import kotlinx.coroutines.flow.flowOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,3 +104,69 @@ fun MainScreen(
     }
 }
 
+@Composable
+private fun previewGrid(
+    photos: List<Photo>,
+    refresh: LoadState = LoadState.NotLoading(endOfPaginationReached = false),
+    append: LoadState = LoadState.NotLoading(endOfPaginationReached = false),
+): LazyPagingItems<Photo> = flowOf(
+    PagingData.from(
+        data = photos,
+        sourceLoadStates = LoadStates(
+            refresh = refresh,
+            prepend = LoadState.NotLoading(endOfPaginationReached = true),
+            append = append,
+        ),
+    ),
+).collectAsLazyPagingItems()
+
+@ThemePreviews
+@Composable
+private fun PhotoGridPreview() {
+    UnsplashcardTheme {
+        PhotoGrid(
+            photos = previewGrid(photos = previewPhotos()),
+            onPhotoClick = {},
+            onPhotoLikeClick = {},
+            onRetry = {})
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun PhotoGridEmptyPreview() {
+    UnsplashcardTheme {
+        PhotoGrid(
+            photos = previewGrid(photos = emptyList()),
+            onPhotoLikeClick = {},
+            onPhotoClick = {},
+            onRetry = {}
+        )
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun PhotoGridErrorPreview() {
+    UnsplashcardTheme {
+        PhotoGrid(
+            photos = previewGrid(emptyList(), refresh = LoadState.Error(PhotoError.Network)),
+            onPhotoLikeClick = {},
+            onPhotoClick = {},
+            onRetry = {}
+        )
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun PhotoGridAppendErrorPreview() {
+    UnsplashcardTheme {
+        PhotoGrid(
+            photos = previewGrid(previewPhotos(2), append = LoadState.Error(PhotoError.Network)),
+            onPhotoLikeClick = {},
+            onPhotoClick = {},
+            onRetry = {}
+        )
+    }
+}

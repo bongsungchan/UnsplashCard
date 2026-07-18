@@ -20,3 +20,12 @@ fun previewPhoto(
     likes = 128,
     isLike = isLike,
 )
+
+fun previewPhotos(count: Int = 6): List<Photo> = List(count) { index ->
+    previewPhoto(
+        id = "p$index",
+        description = if (index % 3 == 0) null else "사진 설명 $index",
+        authorName = "작가 $index",
+        isLike = index % 2 == 0,
+    )
+}
