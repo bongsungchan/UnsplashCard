@@ -1,6 +1,7 @@
 package com.sungchanbong.core.design_system.preview
 
 import com.sungchanbong.domain.models.Photo
+import com.sungchanbong.domain.models.PhotoDetail
 
 fun previewPhoto(
     id: String = "p1",
@@ -29,3 +30,16 @@ fun previewPhotos(count: Int = 6): List<Photo> = List(count) { index ->
         isLike = index % 2 == 0,
     )
 }
+
+fun previewPhotoDetail(
+    isLike: Boolean = true,
+    isStale: Boolean = false,
+) = PhotoDetail(
+    photo = previewPhoto(isLike = isLike),
+    views = 12_345,
+    downloads = 678,
+    location = "서울, 대한민국",
+    exifModel = "Test",
+    tags = listOf("nature", "forest", "sunrise"),
+    isStale = isStale,
+)

@@ -35,6 +35,9 @@ import com.sungchanbong.core.architecture.CollectAsEffect
 import com.sungchanbong.core.design_system.component.ErrorContent
 import com.sungchanbong.core.design_system.component.LikeButton
 import com.sungchanbong.core.design_system.component.toMessage
+import com.sungchanbong.core.design_system.preview.ThemePreviews
+import com.sungchanbong.core.design_system.preview.previewPhotoDetail
+import com.sungchanbong.core.design_system.theme.UnsplashcardTheme
 import com.sungchanbong.feature.detail.ui.DetailContent
 import kotlinx.coroutines.launch
 
@@ -151,5 +154,25 @@ fun DetailScreen(
                 )
             }
         }
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun DetailScreenPreview() {
+    UnsplashcardTheme {
+        DetailContent(
+            detail = previewPhotoDetail()
+        ) { }
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun DetailScreenStableStatePreview() {
+    UnsplashcardTheme {
+        DetailContent(
+            detail = previewPhotoDetail(isStale = true)
+        ) { }
     }
 }
