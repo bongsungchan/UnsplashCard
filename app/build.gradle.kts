@@ -3,6 +3,7 @@ plugins {
     id("sungchanbong.android.compose")
     id("sungchanbong.android.hilt")
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -49,4 +50,6 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.paging.common)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.profileinstaller)
+    baselineProfile(project(":baselineprofile"))
 }

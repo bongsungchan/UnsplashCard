@@ -32,6 +32,11 @@ mockk = "1.14.11"
 turbine = "1.2.1"
 robolectric = "4.16.1"
 
+profileinstaller = "1.4.1"
+baselineProfile = "1.5.0-alpha07"
+benchmarkMacro = "1.4.1"
+uiautomator = "2.4.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
@@ -92,6 +97,9 @@ paging-testing = { group = "androidx.paging", name = "paging-testing", version.r
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver3-junit4", version.ref = "okhttp" }
 room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
+androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacro" }
+androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 
 
 [plugins]
@@ -102,6 +110,8 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineProfile" }
+
 
 [bundles]
 unit-test = ["junit", "kotlinx-coroutines-test", "mockk", "turbine"]
