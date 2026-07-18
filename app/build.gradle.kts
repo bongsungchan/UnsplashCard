@@ -12,6 +12,7 @@ android {
         applicationId = "com.sungchanbong.unsplashcard"
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "com.sungchanbong.unsplashcard.HiltTestRunner"
     }
 
     buildTypes {
