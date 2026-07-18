@@ -27,3 +27,5 @@ fun Project.configureKotlinJvmOnly() {
         compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
 }
+
+const val ANDROID_JUNIT_RUNNER = "androidx.test.runner.AndroidJUnitRunner"

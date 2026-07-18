@@ -13,6 +13,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             defaultConfig {
                 minSdk = minSdkVersion
                 targetSdk = targetSdkVersion
+                testInstrumentationRunner = ANDROID_JUNIT_RUNNER
             }
             compileOptions {
                 sourceCompatibility = JAVA_VERSION
