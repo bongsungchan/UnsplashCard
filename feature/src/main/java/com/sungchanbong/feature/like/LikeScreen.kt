@@ -22,6 +22,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sungchanbong.core.R
 import com.sungchanbong.core.architecture.CollectAsEffect
+import com.sungchanbong.core.design_system.preview.ThemePreviews
+import com.sungchanbong.core.design_system.preview.previewPhotos
+import com.sungchanbong.core.design_system.theme.UnsplashcardTheme
+import com.sungchanbong.domain.models.PhotoError
 import com.sungchanbong.feature.like.ui.LikePhotoContents
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -85,6 +89,71 @@ fun LikeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+        )
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun LikeScreenPreview() {
+    UnsplashcardTheme {
+        LikePhotoContents(
+            photos = previewPhotos(4),
+            isLoading = false,
+            isEmpty = false,
+            error = null,
+            onPhotoClick = {},
+            onPhotoLikeClick = {},
+            onRetry = {},
+        )
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun LikeScreenEmptyPreview() {
+    UnsplashcardTheme {
+        LikePhotoContents(
+            photos = emptyList(),
+            isLoading = false,
+            isEmpty = true,
+            error = null,
+            onPhotoClick = {},
+            onPhotoLikeClick = {},
+            onRetry = {},
+        )
+    }
+}
+
+
+@ThemePreviews
+@Composable
+private fun LikeScreenErrorPreview() {
+    UnsplashcardTheme {
+        LikePhotoContents(
+            photos = emptyList(),
+            isLoading = false,
+            isEmpty = false,
+            error = PhotoError.Unexpected(IllegalStateException("db corrupted")),
+            onPhotoClick = {},
+            onPhotoLikeClick = {},
+            onRetry = {},
+        )
+    }
+}
+
+@ThemePreviews
+@Composable
+private fun LikeScreenLoadingPreview() {
+    UnsplashcardTheme {
+        LikePhotoContents(
+            photos = emptyList(),
+            isLoading = true,
+            isEmpty = false,
+            error = null,
+            onPhotoClick = {},
+            onPhotoLikeClick = {},
+            onRetry = {},
         )
     }
 }
