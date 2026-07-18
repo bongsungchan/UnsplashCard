@@ -11,6 +11,8 @@ import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.sungchanbong.domain.download.PhotoFileDownloader
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,23 +29,27 @@ class DownloadManagerFileDownloader @Inject constructor(
         ) != PackageManager.PERMISSION_GRANTED
     }
 
-    override fun download(url: String, fileName: String): Result<Unit> = runCatching {
-        val downloadManager = checkNotNull(context.getSystemService<DownloadManager>()) {
-            "DownloadManager 를 사용할 수 없는 기기입니다."
+    override suspend fun download(url: String, fileName: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val downloadManager = checkNotNull(context.getSystemService<DownloadManager>()) {
+                    "DownloadManager 를 사용할 수 없는 기기입니다."
+                }
+
+                val request = DownloadManager.Request(url.toUri())
+                    .setTitle(fileName)
+                    .setMimeType(MIME_JPEG)
+                    .setNotificationVisibility(
+                        DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED,
+                    )
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, fileName)
+                    .setAllowedOverMetered(true)
+                    .setAllowedOverRoaming(true)
+
+                downloadManager.enqueue(request)
+                Unit
+            }
         }
-
-        val request = DownloadManager.Request(url.toUri())
-            .setTitle(fileName)
-            .setMimeType(MIME_JPEG)
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, fileName)
-
-            .setAllowedOverMetered(true)
-            .setAllowedOverRoaming(true)
-
-        downloadManager.enqueue(request)
-        Unit
-    }
 
     private companion object {
         const val MIME_JPEG = "image/jpeg"
